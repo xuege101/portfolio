@@ -1,0 +1,72 @@
+---
+// Projects.astro
+const projects = [
+  { title: "K8s Automated Scaler", desc: "A custom autoscaling metric server built in Go.", status: "In Progress" },
+  { title: "Terraform Module Registry", desc: "A centralized repository of reusable IaC modules.", status: "Coming Soon" },
+  { title: "GitOps Dashboard", desc: "A unified view for multi-cluster deployments across regions.", status: "Planning" }
+];
+---
+<section id="projects" class="py-24 px-6 relative">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Featured Projects</h2>
+      <div class="h-1 w-24 bg-primary rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+      <p class="mt-6 text-xl text-gray-400">
+        Some of the personal projects and side-hustles I'm currently working on.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {projects.map((proj, i) => (
+        <div class="project-card group relative flex flex-col justify-between p-8 glass rounded-2xl overflow-hidden min-h-[300px] hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(16,185,129,0.15)] transition-all duration-300 opacity-0 translate-y-12">
+          <!-- Subtle Glow Background -->
+          <div class="absolute -inset-1 bg-gradient-to-r from-primary/20 to-secondary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+          <!-- Not Ready Overlay -->
+          <div class="absolute inset-0 bg-bg-dark/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="px-6 py-2 bg-white text-bg-dark font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+              Not Ready
+            </span>
+          </div>
+
+          <div class="relative z-0">
+            <div class="flex justify-between items-start mb-6">
+              <h3 class="text-2xl font-bold text-white group-hover:text-primary transition-colors">{proj.title}</h3>
+            </div>
+            <p class="text-gray-300 leading-relaxed">{proj.desc}</p>
+          </div>
+          
+          <div class="relative z-0 mt-8 pt-6 border-t border-white/10 flex justify-between items-center text-sm font-medium">
+             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent/20 text-accent border border-accent/30">
+               {proj.status}
+             </span>
+             <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+             </svg>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.to('.project-card', {
+      scrollTrigger: {
+        trigger: '#projects',
+        start: "top 80%",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.15,
+      ease: "power3.out"
+    });
+  });
+</script>

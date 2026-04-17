@@ -1,0 +1,91 @@
+---
+// Hero.astro
+---
+
+<section id="about" class="relative w-full h-screen flex items-center overflow-hidden bg-bg-dark">
+  
+  <!-- 3D Graph Container -->
+  <div id="graph-container" class="absolute inset-0 w-full h-full z-0 opacity-40"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 flex flex-col justify-center h-full">
+    <div class="glass p-8 md:p-12 rounded-2xl max-w-2xl transform hover:scale-[1.01] transition-transform duration-500">
+      <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-primary/20 text-primary text-sm font-medium border border-primary/30">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+        </span>
+        Available for new opportunities
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4">
+        Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Francis</span>
+      </h1>
+
+      <h2 class="text-xl md:text-2xl font-semibold text-gray-300 tracking-wide mb-6">
+        DevOps Engineer | Cloud Automation | CI/CD | SRE
+      </h2>
+
+      <p class="text-lg text-gray-400 max-w-xl leading-relaxed mb-8">
+        I'm a DevOps Engineer passionate about automating everything, optimizing CI/CD pipelines, and ensuring scalable, secure cloud environments. With a mindset geared toward continuous improvement, I bridge the gap between development and operations.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="#projects" class="px-8 py-3 bg-primary text-white hover:bg-primary/90 font-medium rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.6)]">
+          View My Work
+        </a>
+        <a href="#contact" class="px-8 py-3 border border-white/20 text-white hover:bg-white/10 font-medium rounded-lg transition-colors backdrop-blur-sm">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Dynamically import 3d-force-graph to ensure it only runs on client
+  import ForceGraph3D from '3d-force-graph';
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById('graph-container');
+    if (!container) return;
+
+    // Generate random nodes and links for a "cloud net" aesthetic
+    const N = 80;
+    const gData = {
+      nodes: [...Array(N).keys()].map(i => ({ id: i })),
+      links: [...Array(N).keys()]
+        .filter(id => id)
+        .map(id => ({
+          source: id,
+          target: Math.round(Math.random() * (id - 1))
+        }))
+    };
+
+    const Graph = ForceGraph3D()(container)
+      .graphData(gData)
+      .nodeColor(() => '#10b981')
+      .linkColor(() => '#0ea5e9')
+      .nodeRelSize(4)
+      .linkWidth(1)
+      .linkDirectionalParticles(2)
+      .linkDirectionalParticleWidth(2)
+      .backgroundColor('#0f172a'); // Tailored to bg-dark
+
+    // Auto rotate the graph
+    let angle = 0;
+    setInterval(() => {
+      Graph.cameraPosition({
+        x: 400 * Math.sin(angle),
+        z: 400 * Math.cos(angle)
+      });
+      angle += 0.001; // subtle rotation
+    }, 20);
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+      Graph.width(container.clientWidth);
+      Graph.height(container.clientHeight);
+    });
+  });
+</script>
