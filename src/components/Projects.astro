@@ -1,52 +1,141 @@
 ---
-// Projects.astro
+// ============================================================
+// Projects.astro — "Projects" page component
+// ============================================================
+// HOW TO ADD A PROJECT:
+//   1. Copy one of the project objects in the `projects` array below
+//   2. Fill in: title, desc, tech[], status, href, and github
+//   3. Set `comingSoon: true` to show an overlay instead of a live link
+// ============================================================
+
+// ✏️ EDIT / ADD YOUR PROJECTS HERE
 const projects = [
-  { title: "K8s Automated Scaler", desc: "A custom autoscaling metric server built in Go.", status: "In Progress" },
-  { title: "Terraform Module Registry", desc: "A centralized repository of reusable IaC modules.", status: "Coming Soon" },
-  { title: "GitOps Dashboard", desc: "A unified view for multi-cluster deployments across regions.", status: "Planning" }
+  {
+    title: "CI/CD Pipeline Migration",
+    desc: "Led the migration of legacy Gerrit repositories to GitHub Enterprise with zero-downtime, modernizing CI/CD with GitHub Actions and Jenkins.",
+    tech: ["GitHub Actions", "Jenkins", "Gerrit", "GitHub Enterprise"],
+    status: "Completed",
+    statusColor: "green",   // "green" | "blue" | "purple" | "yellow"
+    href: "https://github.com/xuege101",
+    comingSoon: false,
+  },
+  {
+    title: "MLOps Automation Platform",
+    desc: "Automated building and running of internal ML/AI projects on Kubernetes, reducing manual effort from 5 minutes to zero via git-push triggers.",
+    tech: ["Kubernetes", "Docker", "Python", "GitHub Actions"],
+    status: "Completed",
+    statusColor: "green",
+    href: "https://github.com/xuege101",
+    comingSoon: false,
+  },
+  {
+    title: "Singularity Container Workflows",
+    desc: "Implemented Singularity containerization for HPC-style workloads to ensure environment parity across diverse deployment targets alongside Docker.",
+    tech: ["Singularity", "Docker", "Bash", "Linux"],
+    status: "Completed",
+    statusColor: "green",
+    href: "https://github.com/xuege101",
+    comingSoon: false,
+  },
+  {
+    title: "Invoice Data Extraction with LLM",
+    desc: "Architected a completely offline AI pipeline using self-hosted LLMs (Ollama) to parse unstructured invoice PDFs into validated, structured JSON schema. Built a NextJS interface for human-in-the-loop verification.",
+    tech: ["Python", "Self-Hosted Ollama", "NextJS"],
+    status: "In Progress",
+    statusColor: "blue",
+    href: "#",
+    comingSoon: true,
+  },
+  {
+    title: "NLP Code-Mix Research Tool",
+    desc: "Academic research tool for extracting structured data from Malaysian Code-Mixed text using NLP pipelines. Built during the TARUMT research assistantship.",
+    tech: ["Python", "NLP", "Transformers", "Data Science"],
+    status: "Research",
+    statusColor: "purple",
+    href: "https://github.com/xuege101",
+    comingSoon: false,
+  },
+  {
+    title: "DevOps Dashboard",
+    desc: "A unified monitoring and deployment dashboard for multi-environment CI/CD pipelines — personal side project currently in planning.",
+    tech: ["React", "Docker", "Prometheus", "Grafana"],
+    status: "Planning",
+    statusColor: "yellow",
+    href: "#",
+    comingSoon: true,
+  },
 ];
+
+// Status badge colour map
+const statusColors: Record<string, string> = {
+  green:  "bg-primary/20 text-primary border-primary/30",
+  blue:   "bg-secondary/20 text-secondary border-secondary/30",
+  purple: "bg-accent/20 text-accent border-accent/30",
+  yellow: "bg-yellow-400/20 text-yellow-400 border-yellow-400/30",
+};
 ---
+
 <section id="projects" class="py-24 px-6 relative">
   <div class="max-w-6xl mx-auto">
+
+    <!-- Section Header -->
     <div class="mb-16">
-      <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Featured Projects</h2>
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">Projects</h2>
       <div class="h-1 w-24 bg-primary rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-      <p class="mt-6 text-xl text-gray-400">
-        Some of the personal projects and side-hustles I'm currently working on.
+      <p class="mt-6 text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
+        Work delivered at Intel, research built at TARUMT, and personal projects I'm hacking on.
       </p>
     </div>
 
+    <!-- Project Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {projects.map((proj, i) => (
+      {projects.map((proj) => (
         <div class="project-card group relative flex flex-col justify-between p-8 glass rounded-2xl overflow-hidden min-h-[300px] hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(16,185,129,0.15)] transition-all duration-300 opacity-0 translate-y-12">
-          <!-- Subtle Glow Background -->
+
+          <!-- Hover glow -->
           <div class="absolute -inset-1 bg-gradient-to-r from-primary/20 to-secondary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-          <!-- Not Ready Overlay -->
-          <div class="absolute inset-0 bg-bg-dark/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="px-6 py-2 bg-white text-bg-dark font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.4)]">
-              Not Ready
-            </span>
-          </div>
+          <!-- "Coming Soon" overlay — only shown when comingSoon: true -->
+          {proj.comingSoon && (
+            <div class="absolute inset-0 bg-gray-100/70 dark:bg-bg-dark/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <span class="px-6 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg">
+                Coming Soon
+              </span>
+            </div>
+          )}
 
+          <!-- Card Body -->
           <div class="relative z-0">
             <div class="flex justify-between items-start mb-6">
-              <h3 class="text-2xl font-bold text-white group-hover:text-primary transition-colors">{proj.title}</h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors pr-4">
+                {proj.title}
+              </h3>
+              <!-- Status Badge -->
+              <span class={`shrink-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[proj.statusColor]}`}>
+                {proj.status}
+              </span>
             </div>
-            <p class="text-gray-300 leading-relaxed">{proj.desc}</p>
+
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-sm mb-5">
+              {proj.desc}
+            </p>
+
+            <!-- Tech Tags -->
+            <div class="flex flex-wrap gap-2">
+              {proj.tech.map(t => (
+                <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-gray-100/50 dark:bg-white/5 border border-gray-300/50 dark:border-white/10 text-gray-700 dark:text-gray-400">
+                  {t}
+                </span>
+              ))}
+            </div>
           </div>
-          
-          <div class="relative z-0 mt-8 pt-6 border-t border-white/10 flex justify-between items-center text-sm font-medium">
-             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent/20 text-accent border border-accent/30">
-               {proj.status}
-             </span>
-             <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-             </svg>
-          </div>
+
+
+
         </div>
       ))}
     </div>
+
   </div>
 </section>
 
@@ -56,16 +145,13 @@ const projects = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     gsap.to('.project-card', {
-      scrollTrigger: {
-        trigger: '#projects',
-        start: "top 80%",
-      },
+      scrollTrigger: { trigger: '#projects', start: "top 80%" },
       opacity: 1,
       y: 0,
       duration: 0.7,
-      stagger: 0.15,
+      stagger: 0.12,
       ease: "power3.out"
     });
   });
